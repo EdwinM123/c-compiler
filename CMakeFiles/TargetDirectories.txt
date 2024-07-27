@@ -1,3 +1,0 @@
-C:/Users/emuno/Documents/Projects/c-compiler/CMakeFiles/C_Compiler.dir
-C:/Users/emuno/Documents/Projects/c-compiler/CMakeFiles/edit_cache.dir
-C:/Users/emuno/Documents/Projects/c-compiler/CMakeFiles/rebuild_cache.dir
