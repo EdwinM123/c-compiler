@@ -129,22 +129,7 @@ static void endCompiler(){
 
 static void expression();
 static ParseRule* getRule(TokenType type); 
-static void parsePrecedence(Precedence precedence){
-  advance(); 
-  ParseFn prefixRule = getRule(parser.previous.type)->prefix;
-  if(prefixRule==NULL){
-    error("Expect expression.");
-    return;
-  }
-
-  prefixRule();
-
-  while(precedence<=getRule(parser.current.type)->precedence){
-    advance();
-    ParseFn infixRule=getRule(parser.previous.type)->infix;
-    infixRule();
-  }
-}
+static void parsePrecedence(Precedence precedence);
 
 static void binary(){
   TokenType operatorType=parser.previous.type;
@@ -222,10 +207,23 @@ ParseRule rules[]={
   [TOKEN_WHILE]         = {NULL,     NULL,   PREC_NONE},
   [TOKEN_ERROR]         = {NULL,     NULL,   PREC_NONE},
   [TOKEN_EOF]           = {NULL,     NULL,   PREC_NONE},
-}
+};
 
 static void parsePrecedence(Precedence precedence){
+  advance(); 
+  ParseFn prefixRule = getRule(parser.previous.type)->prefix;
+  if(prefixRule==NULL){
+    error("Expect expression.");
+    return;
+  }
 
+  prefixRule();
+
+  while(precedence<=getRule(parser.current.type)->precedence){
+    advance();
+    ParseFn infixRule=getRule(parser.previous.type)->infix;
+    infixRule();
+  }
 }
 
 static ParseRule* getRule(TokenType type){

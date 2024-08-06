@@ -142,12 +142,12 @@ static TokenType identifierType(){
 }
 
 static Token identifier(){
-  while(isAlpha(peak())|| isDigit(peek())) advance();
+  while(isAlpha(peek())|| isDigit(peek())) advance();
   return makeToken(identifierType());
 }
 
 static Token number(){
-  while(isDigit(peak())) advance();
+  while(isDigit(peek())) advance();
 
   if(peek()=='.' && isDigit(peekNext())){
     advance();
