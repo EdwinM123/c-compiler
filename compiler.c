@@ -118,6 +118,10 @@ static void endCompiler(){
   emitReturn();
 }
 
+static void expression();
+static ParseRule* getRule(TokenType type); 
+static void parsePrecedence(Precedence precedence);
+
 static void binary(){
   TokenType operatorType=parser.previous.type;
   ParseRule* rule = getRule(operatorType);
@@ -198,6 +202,10 @@ ParseRule rules[]={
 
 static void parsePrecedence(Precedence precedence){
 
+}
+
+static ParseRule* getRule(TokenType type){
+  return &rules[type];
 }
 
 static void expression(){
