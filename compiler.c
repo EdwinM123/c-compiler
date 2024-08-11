@@ -154,6 +154,7 @@ static void endCompiler(){
 #endif
 }
 
+
 static void expression();
 static void statement();
 static void declaration();
@@ -314,6 +315,14 @@ static ParseRule* getRule(TokenType type){
 
 static void expression(){
   parsePrecedence(PREC_ASSIGNMENT);
+}
+
+static void block(){
+  while(!check(TOKEN_RIGHT_BRACE)&&!check(TOKEN_EOF)){
+    declaration();
+  }
+
+  consume(ToKEN_RIGHT_BRACE, "Expect '}' after block.");
 }
 
 static void varDeclaration(){
