@@ -172,6 +172,17 @@ static uint8_t identifierConstant(Token* name){
   return makeConstant(OBJ_VAL(copyString(name->start, name->length)));
 }
 
+static void addLocal(Token name){
+  if(current->localCount==UINT8_COUNT){
+    error("Too many local variables in function.");
+    return;
+  }
+
+  Local* local = &current->locals[current->localCount++];
+  local->name=name;
+  local->depth=current->scoreDepth;
+}
+
 static void declareVariable(){
   if(current->scopeDepth==0) return; 
 
