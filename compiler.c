@@ -351,7 +351,7 @@ static void declaration(){
 
 static void statement(){
   if(match(TOKEN_PRINT)){
-    printStatement():
+    printStatement();
   }
   else {
     expressionStatement();
