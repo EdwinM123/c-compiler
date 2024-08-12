@@ -475,6 +475,9 @@ static void statement(){
   if(match(TOKEN_PRINT)){
     printStatement();
   }
+  else if (match(TOKEN_IF)){
+    ifStatement();
+  }
   else if (match(TOKEN_LEFT_BRACE)){
     beginScope();
     block();
