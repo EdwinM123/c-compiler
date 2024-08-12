@@ -259,7 +259,7 @@ static uint8_t parseVariable(const char* errorMessage){
   consume(TOKEN_IDENTIFIER, errorMessage);
   
   declareVariable();
-  if(current->scoreDepth>0) return 0;
+  if(current->scopeDepth>0) return 0;
 
   return identifierConstant(&parser.previous);
 }
@@ -332,7 +332,7 @@ static void or_(bool canAssign){
   patchJump(elseJump);
   emitByte(OP_POP);
   parsePrecedence(PREC_OR);
-  patchJump(endJump);``
+  patchJump(endJump);
 }
 
 static void string(bool canAssign){
@@ -455,7 +455,7 @@ static void block(){
     declaration();
   }
 
-  consume(ToKEN_RIGHT_BRACE, "Expect '}' after block.");
+  consume(TOKEN_RIGHT_BRACE, "Expect '}' after block.");
 }
 
 static void varDeclaration(){
