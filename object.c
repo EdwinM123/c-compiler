@@ -68,6 +68,10 @@ ObjString* copyString(const char* chars, int length){
 }
 
 static void printFunction(ObjFunction* function){
+  if (function->name==NULL){
+    print("<script>");
+    return;
+  }
   printf("<fn %s>", function->name->chars);
 }
 
