@@ -145,7 +145,7 @@ static InterpretResult run(){
   CallFrame* frame = &vm.frames[vm.frameCount-1];
 #define READ_BYTE() (*frame->ip++)
 #define READ_SHORT() \
-  (frame->ip+=2), \
+  (frame->ip+=2, \
   (uint16_t)((frame->ip[-2]<<8) | frame->ip[-1]))
 
 #define READ_CONSTANT() \
@@ -184,7 +184,7 @@ static InterpretResult run(){
       case OP_TRUE: push(BOOL_VAL(true)); break;
       case OP_FALSE:push(BOOL_VAL(false)); break;
       case OP_POP: pop(); break;
-      case OP_GET_GLOBAL:{
+      case OP_GET_LOCAL:{
         uint8_t slot = READ_BYTE();
         push(frame->slots[slot]);
         break;
