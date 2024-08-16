@@ -64,6 +64,7 @@ struct ObjString{
 typedef struct ObjValue{
   Obj obj;
   Value* location; 
+  Value closed;
   struct ObjUpvalue* next;
 } ObjUpvalue; 
 
