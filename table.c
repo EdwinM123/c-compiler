@@ -25,7 +25,7 @@ static Entry* findEntry(Entry* entries, int capacity, ObjString* key){
   for(;;){
     Entry* entry = &entries[index];
     if(entry->key==NULL){
-      if(IS_NIL(entry->)){
+      if(IS_NIL(entry->value)){
         return tombstone !=NULL ? tombstone : entry;
       }
       else if(tombstone==NULL){
@@ -114,12 +114,20 @@ ObjString* tableFindString(Table* table, const char* chars, int length, uint32_t
   for(;;){
     Entry* entry = &table->entries[index];
     if(entry->key==NULL){
-      if(IS_NIL(entry->)) return NULL;
+      if(IS_NIL(entry->value)) return NULL;
     }
-  }
-  else if(entry->key->length == length && entry->key->hash==hash&& memcmp(entry->key->chars, chars, length)==0){
-    return entry->key;
-  }
+    else if(entry->key->length == length && entry->key->hash==hash&& memcmp(entry->key->chars, chars, length)==0){
+      return entry->key;
+    }
 
-  index = (index+1) % table -> capacity;
+    index = (index+1) % table -> capacity;
+  } 
+}
+
+void markTable(Table* table){
+  for (int i=0; i< table->capacity; i++){
+    Entry* entry = &table->entries[i];
+    markObject((Obj*)entry->key);
+    markValue(entry->value);
+  }
 }
