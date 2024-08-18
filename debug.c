@@ -107,10 +107,10 @@ int disassembleInstruction(Chunk* chunk, int offset){
       offset++; 
       uint8_t constant = chunk->code[offset++];
       printf("%-16s %4d ", "OP_CLOSURE", constant);
-      printValue(chunk->constants.value[constant]);
+      printValue(chunk->constants.values[constant]);
       printf("\n");
 
-      ObjFunction* function = AS_FUNCTION(chunk->constants.value[constant]);
+      ObjFunction* function = AS_FUNCTION(chunk->constants.values[constant]);
       for(int j=0; j<function->upvalueCount; j++){
         int isLocal = chunk->code[offset++];
         int index = chunk->code[offset++];
