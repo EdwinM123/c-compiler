@@ -27,12 +27,7 @@ static void runtimeError(const char* format, ...){
   va_start(args, format);
   vfprintf(stderr, format, args); 
   va_end(args); 
-  fputs("\n", stderr); 
-
-  CallFrame* frame = &vm.frames[vm.frameCount-1];
-  size_t instruction = frame->ip - frame->function->chunk.code -1;
-  int line = frame->function->chunk.lines[instruction];
-  fprintf(stderr, "[line %d] in script\n", line);
+  fputs("\n", stderr);  
   for(int i=vm.frameCount-1; i>=0; i--){
     CallFrame* frame = &vm.frames[i];
     ObjFunction* function = frame->closure->function; 
@@ -61,6 +56,10 @@ static void defineNative(const char* name, NativeFn function){
 void initVM(){
   resetStack();
   vm.objects=NULL;
+
+  vm.grayCount=0;
+  vm.grayCapacity=0;
+  vm.grayStack=NULL;
 
   initTable(&vm.globals);
   initTable(&vm.strings);
@@ -137,7 +136,7 @@ static ObjUpvalue* captureUpvalue(Value* local){
     return upvalue;
   }
 
-  ObjValue* createdUpvalue = newUpvalue(local);
+  ObjUpvalue* createdUpvalue = newUpvalue(local);
   createdUpvalue->next = upvalue;
 
   if (prevUpvalue ==NULL){
@@ -261,12 +260,7 @@ static InterpretResult run(){
         uint8_t slot = READ_BYTE();
         *frame->closure->upvalues[slot]->location = peek(0);
         break;
-      }
-      case OP_SET_UPVALUE: {
-        uint8_t slot = READ_BYTE(); 
-        *frame->closure->upvalues[slot]->location = peek(0);
-        break;
-      }
+      } 
       case OP_EQUAL: {
         Value b = pop(); 
         Value a=pop();
