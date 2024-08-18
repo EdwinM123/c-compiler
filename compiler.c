@@ -4,6 +4,7 @@
 
 #include "common.h"
 #include "compiler.h"
+#include "memory.h"
 #include "scanner.h"
 
 #ifdef DEBUG_PRINT_CODE
@@ -284,17 +285,22 @@ static int addUpvalue(Compiler* compiler, uint8_t index, bool isLocal){
 }
 
 static int resolveUpvalue(Compiler* compiler, Token* name){
-  if(compiler->enclosing==NULL) return -1;
+  if (compiler->enclosing == NULL) return -1;
 
-  int upvalue = resolveLocal(compiler->enclosing, name);
-  if(upvalue!=-1){
+  int local = resolveLocal(compiler->enclosing, name);
+  if(local!=-1){
     compiler->enclosing->locals[local].isCaptured=true;
+    return addUpvalue(compiler, (uint8_t)local, true);
+  }
+
+  int upvalue = resolveUpvalue(compiler->enclosing, name);
+  if(upvalue != -1){
     return addUpvalue(compiler, (uint8_t)upvalue, false);
   }
 
+
   return -1;
 }
-
 static void addLocal(Token name){
   if(current->localCount==UINT8_COUNT){
     error("Too many local variables in function.");
@@ -792,3 +798,10 @@ ObjFunction* compile(const char* source){
   return parser.hadError ? NULL : function;
 }
 
+void markCompilerRoots(){
+  Compiler* compiler = current; 
+  while(compiler!=NULL){
+    markObject((Obj*)compiler->function);
+    compiler=compiler->enclosing;
+  }
+}
