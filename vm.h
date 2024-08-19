@@ -22,6 +22,7 @@ typedef struct{
   Value* stackTop;
   Table globals;
   Table strings;
+  ObjString* initString;
   ObjUpvalue* openUpvalues;
 
   size_t bytesAllocated; 
@@ -46,5 +47,4 @@ InterpretResult interpret(const char* source);
 void push(Value value); 
 Value pop(); 
 
-#endif 
-
+#endif
