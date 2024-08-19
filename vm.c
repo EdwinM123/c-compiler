@@ -131,6 +131,19 @@ static bool callValue(Value callee, int argCount){
   return false;
 }
 
+static bool bindMethod(ObjClass* klass, ObjString* name){
+  Value method; 
+  if(!tableGet(&klass->methods, name, &method)){
+    runtimeError("Undefined property '%s'.", name->chars);
+    return false;
+  }
+
+  ObjBoundMethod* bound = newBoundMethod(peek(0), AS_CLOSURE(method));
+  pop();
+  push(OBJ_VAL(bound));
+  return true;
+}
+
 static ObjUpvalue* captureUpvalue(Value* local){
   ObjUpvalue* prevUpvalue = NULL;
   ObjUpvalue* upvalue = vm.openUpvalues;
@@ -291,6 +304,10 @@ static InterpretResult run(){
           push(value);
           break;
         }
+        if(!bindMethod(instance->klass, name)) {
+          return INTERPRET_RUNTIME_ERROR;
+        }
+        break;
 
         runtimeError("Undefined property '%s'.", name->chars);
         return INTERPRET_RUNTIME_ERROR;
