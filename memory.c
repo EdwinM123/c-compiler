@@ -38,7 +38,7 @@ void markObject(Obj* object){
 #ifdef DEBUG_LOG_GC 
   printf("%p mark ", (void*)object);
   printValue(OBJ_VAL(object));
-  prinf("\n");
+  printf("\n");
 #endif
   object->isMarked=true;
   if(vm.grayCapacity<vm.grayCount+1){
@@ -65,7 +65,7 @@ static void blackenObject(Obj* object){
 #ifdef DEBUG_LOG_GC
   printf("%p blacken ", (void*)object);
   printValue(OBJ_VAL(object));
-  print("\n");
+  printf("\n");
 #endif
   switch (object->type){
     case OBJ_BOUND_METHOD: {
@@ -203,7 +203,7 @@ static void sweep(){
       else {
         vm.objects = object;
       }
-      freeOject(unreached);
+      freeObject(unreached);
     }
   }
 }

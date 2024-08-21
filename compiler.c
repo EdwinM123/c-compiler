@@ -342,7 +342,7 @@ static void declareVariable(){
       break;
     }
 
-    if(identifersEqual(name, &local->name)){
+    if(identifiersEqual(name, &local->name)){
       error("Already a variable with this name in this scope.");
     }
   }

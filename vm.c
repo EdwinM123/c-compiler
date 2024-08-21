@@ -173,7 +173,7 @@ static bool invoke(ObjString* name, int argCount) {
     return callValue(value, argCount);
   }
 
-  return invokveFromClass(instance->klass, name, argCount);
+  return invokeFromClass(instance->klass, name, argCount);
 }
 
 static bool bindMethod(ObjClass* klass, ObjString* name){
@@ -508,7 +508,7 @@ static InterpretResult run(){
         }
 
         ObjClass* subclass = AS_CLASS(peek(0));
-        tableAndAll(&AS_CLASS(superclass)->methods, &subclass->methods);
+        tableAddAll(&AS_CLASS(superclass)->methods, &subclass->methods);
         pop();
         break;
       }

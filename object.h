@@ -43,6 +43,14 @@ struct Obj{
   struct Obj* next;
 };
 
+
+typedef struct ObjUpvalue{
+  Obj obj;
+  Value* location; 
+  Value closed;
+  struct ObjUpvalue* next;
+} ObjUpvalue; 
+
 typedef struct{
   Obj obj;
   int arity;
@@ -89,14 +97,7 @@ struct ObjString{
   int length; 
   char* chars;
   uint32_t hash;
-};
-
-typedef struct ObjValue{
-  Obj obj;
-  Value* location; 
-  Value closed;
-  struct ObjUpvalue* next;
-} ObjUpvalue; 
+}; 
 
 ObjBoundMethod* newBoundMethod(Value receiver, ObjClosure* method);
 

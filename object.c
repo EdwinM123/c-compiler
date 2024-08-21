@@ -127,7 +127,7 @@ ObjUpvalue* newUpvalue(Value* slot){
 
 static void printFunction(ObjFunction* function){
   if (function->name==NULL){
-    print("<script>");
+    printf("<script>");
     return;
   }
   printf("<fn %s>", function->name->chars);
@@ -139,7 +139,7 @@ void printObject(Value value){
       printFunction(AS_BOUND_METHOD(value)->method->function);
       break;
     case OBJ_CLASS:
-      prinf("%s", AS_CLASS(value)->name->chars);
+      printf("%s", AS_CLASS(value)->name->chars);
       break;
     case OBJ_CLOSURE: 
       printFunction(AS_CLOSURE(value)->function);
