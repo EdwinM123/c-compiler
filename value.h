@@ -1,6 +1,8 @@
 #ifndef clox_value_h 
 #define clox_value_h
  
+#include <string.h>
+
 #include "common.h"
 
 typedef struct Obj Obj;
@@ -8,7 +10,27 @@ typedef struct ObjString ObjString;
 
 #ifdef NAN_BOXING
 
+#define QNAN ((uint64_t)0x7ffc000000000000)
+
 typedef uint64_t Value;
+
+#define IS_NUMBER(value) (((value)&QNAN) != QNAN)
+
+#define AS_NUMBER(value) valueToNum(value)
+
+static inline double valueToNum(Value value){
+  double num;
+  memcpy(&num, &value, sizeof(Value));
+  return num;
+}
+
+#define NUMBER_VAL(num) numToValue(num)
+
+static inline Value numToValue(double num) {
+  Value value;
+  memcpy(&value, &num, sizeof(double));
+  return value;
+}
 
 #else
 
