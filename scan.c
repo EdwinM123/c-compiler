@@ -49,6 +49,33 @@ int scan(struct token *t) {
             t->token=T_SLASH;
             break;
         default:
+
+            if(isdigit(c)) {
+                t->intvalue = scanint(c);
+                t->token = T_INTLIT;
+                break;
+            }
+            printf("Unrecognized character %c on line %d\n", c, Line);
+            exit(1);
     }
     return (1);
+}
+
+static int scanint(int c) {
+    int k, val =0;
+
+    while((k = chrpos("0123456789", c))>=0) {
+        val = val*10+k;
+        c=next();
+    }
+
+    putback(c);
+    return val;
+}
+
+static int chrpos(char *s, int c) {
+    char *p;
+
+    p=strchr(s, c);
+    return(p ? p -s : -1);
 }
