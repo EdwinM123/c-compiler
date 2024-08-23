@@ -118,7 +118,7 @@ int disassembleInstruction(Chunk* chunk, int offset){
       return invokeInstruction("OP_INVOKVE", chunk, offset);
     case OP_SUPER_INVOKE:
       return invokeInstruction("OP_SUPER_INVOKE", chunk, offset);
-    case OP_CLOSURE:
+    case OP_CLOSURE: {
       offset++; 
       uint8_t constant = chunk->code[offset++];
       printf("%-16s %4d ", "OP_CLOSURE", constant);
@@ -132,6 +132,7 @@ int disassembleInstruction(Chunk* chunk, int offset){
         printf("%04d      |                     %s %d\n", offset-2, isLocal ? "local": "upvalue", index);
       }
       return offset;
+    }
     case OP_CLOSE_UPVALUE: 
       return simpleInstruction("OP_CLOSE_UPVALUE", offset);
     case OP_RETURN:

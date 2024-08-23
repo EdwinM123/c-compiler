@@ -51,8 +51,7 @@ void markObject(Obj* object){
 }
 
 void markValue(Value value) {
-  if(!IS_OBJ(value)) return; 
-  markObject(AS_OBJ(value));
+  if(!IS_OBJ(value)) markObject(AS_OBJ(value));
 }
 
 static void markArray(ValueArray* array){
@@ -130,11 +129,7 @@ static void freeObject(Obj* object){
       FREE_ARRAY(ObjUpvalue*, closure->upvalues, closure->upvalueCount);
       FREE(ObjClosure, object);
       break;
-    }
-
-    case OBJ_UPVALUE: 
-      FREE(ObjUpvalue, object);
-      break;
+    } 
     
     case OBJ_FUNCTION:{
       ObjFunction* function = (ObjFunction*)object;
@@ -157,6 +152,10 @@ static void freeObject(Obj* object){
       FREE(ObjString, object); 
       break; 
     }
+
+    case OBJ_UPVALUE: 
+      FREE(ObjUpvalue, object);
+      break;
   }
 }
 

@@ -43,14 +43,6 @@ struct Obj{
   struct Obj* next;
 };
 
-
-typedef struct ObjUpvalue{
-  Obj obj;
-  Value* location; 
-  Value closed;
-  struct ObjUpvalue* next;
-} ObjUpvalue; 
-
 typedef struct{
   Obj obj;
   int arity;
@@ -58,6 +50,28 @@ typedef struct{
   Chunk chunk;
   ObjString* name;
 } ObjFunction;
+
+typedef Value(*NativeFn)(int argCount, Value* args);
+
+typedef struct{
+  Obj obj;
+  NativeFn function;
+} ObjNative;
+
+struct ObjString{
+  Obj obj;
+  int length; 
+  char* chars;
+  uint32_t hash;
+}; 
+
+typedef struct ObjUpvalue{
+  Obj obj;
+  Value* location; 
+  Value closed;
+  struct ObjUpvalue* next;
+} ObjUpvalue; 
+ 
 
 typedef struct {
   Obj obj;
@@ -83,21 +97,7 @@ typedef struct {
   Value receiver; 
   ObjClosure* method;
 
-} ObjBoundMethod;
-
-typedef Value(*NativeFn)(int argCount, Value* args);
-
-typedef struct{
-  Obj obj;
-  NativeFn function;
-} ObjNative;
-
-struct ObjString{
-  Obj obj;
-  int length; 
-  char* chars;
-  uint32_t hash;
-}; 
+} ObjBoundMethod;  
 
 ObjBoundMethod* newBoundMethod(Value receiver, ObjClosure* method);
 

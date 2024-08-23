@@ -239,7 +239,7 @@ static void concatenate(){
 
   int length = a->length+b->length; 
   char* chars = ALLOCATE(char, length+1); 
-  memcpy(chars, a->chars, a->length);
+  memcpy(chars + a->length, a->chars, a->length);
   chars[length]='\0';
 
   ObjString* result = takeString(chars, length);
@@ -322,6 +322,7 @@ static InterpretResult run(){
         if(tableSet(&vm.globals, name, peek(0))){
           tableDelete(&vm.globals, name);
           runtimeError("Defined variable '%s'.", name->chars);
+          return INTERPRET_RUNTIME_ERROR;
         }
         break;
       }
@@ -522,6 +523,11 @@ static InterpretResult run(){
 #undef READ_CONSTANT 
 #undef READ_STRING 
 #undef BINARY_OP 
+}
+
+void hack(bool b) {
+  run();
+  if (b) hack(false);
 }
 
 InterpretResult interpret(const char* source){

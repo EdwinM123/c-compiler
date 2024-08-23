@@ -276,7 +276,7 @@ static int resolveLocal(Compiler* compiler, Token* name){
     Local* local = &compiler->locals[i];
     if(identifiersEqual(name, &local->name)){
       if(local->depth==-1){
-        error("Can't read local variable in its own initialier.");
+        error("Can't read local variable in its own initializer.");
       }
       return i;
     }
@@ -419,7 +419,7 @@ static void binary(bool canAssign){
   }
 }
 
-static void call(bool canAssing){
+static void call(bool canAssign){
   uint8_t argCount = argumentList();
   emitBytes(OP_CALL, argCount);
 }
@@ -737,7 +737,7 @@ static void funDeclaration(){
 }
 
 static void varDeclaration(){
-  uint8_t global = parseVariable("expect variable name.");
+  uint8_t global = parseVariable("Expect variable name.");
 
   if(match(TOKEN_EQUAL)){
     expression();
