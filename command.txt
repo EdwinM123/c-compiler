@@ -1,0 +1,1 @@
+gcc defs.h scan.c main.c data.h decl.h -o main.exe
