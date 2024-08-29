@@ -32,7 +32,5 @@ void main(int argc, char *argv[]) {
     init(); 
     Infile = fopen(argv[1], "r"); 
     scanfile();
-    scan(&Token);
-    n=binexpr();
     exit(0);
 }
