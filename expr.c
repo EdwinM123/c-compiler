@@ -33,34 +33,19 @@ int arithop(int tok) {
 }
 
 struct ASTnode *binexpr(void) {
-    struct ASTnode *left, *right;
+    struct ASTnode *n, *left, *right;
     int nodetype;
 
     left = primary();
 
-    tokentype = Token.token;
     if(Token.token==T_EOF) return(left);
 
-    while(op_precedence(tokentype)>ptp) {
-        scan(&Token);
+    nodetype = arithop(Token.token);
 
-        right = binexpr(OpPrec[tokentype]);
+    scan(&Token);
 
-        left = mkastnode(arithop(tokentype), left, right, 0);
+    right = binexpr();
 
-        tokentype = Token.token;
-        if(tokentype == T_EOF) return (left);
-    }
-    return(left);
-}
-
-static int OpPrec[] = { 0, 10, 10, 20, 20,     0 };
-
-static int op_precedence(int tokentype) {
-    int prec = OpPrec[tokentype];
-    if(prec == 0) {
-        fprintf(stderr, "syntax error on line %d, token %d\n", Line, tokentype); 
-        exit(1);
-    }
-    return(prec);
+    n = mkastnode(nodetype, left, right, 0);
+    return(n);
 }
