@@ -27,28 +27,3 @@ static int skip(void) {
     }
     return(c);
 }
-
-int scan(struct token *t) {
-    int c;
-
-    c = skip();
-
-    switch(c) {
-        case EOF:
-            return (0);
-        case '+':
-            t->token=T_PLUS; 
-            break;
-        case '-';
-            t->token = T_MINUS;
-            break;
-        case '*':
-            t->token=T_STAR;
-            break;
-        case '/':
-            t->token=T_SLASH;
-            break;
-        default:
-    }
-    return (1);
-}
