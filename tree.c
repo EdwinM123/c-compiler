@@ -1,7 +1,3 @@
-#include "defs.h"
-#include "data.h"
-#include "decl.h"
-
 struct ASTnode *mkastnode(int op, struct ASTnode *left, struct ASTnode *right, int intvalue) {
     struct ASTnode *n;
 

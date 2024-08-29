@@ -1,21 +1,3 @@
-#include "defs.h"
-#include "data.h"
-#include "decl.h"
-
-static struct ASTnode *primary(void) {
-    struct ASTnode *n;
-
-    switch (Token.token) {
-        case T_INTLIT:
-            n = mkastleaf(A_INTLIT, Token.intvalue);
-            scan(&Token);
-            return (n);
-        default:
-            fprintf(stderr, "syntax error at line %d\n", Line);
-            exit(1);
-    }
-}
-
 int arithop(int tok) {
     switch(tok) {
         case T_PLUS:
@@ -28,6 +10,20 @@ int arithop(int tok) {
             return(A_DIVIDE);
         default:
             fprintf(stderr, "unknown token in arithop() on line %d\n", Line);
+            exit(1);
+    }
+}
+
+static struct ASTnode *primary(void) {
+    struct ASTnode *n;
+
+    switch (Token.token) {
+        case T_INTLIT:
+            n = mkastleaf(A_INTLIT, Token.intvalue);
+            scan(&Token);
+            return (n);
+        default:
+            fprintf(stderr, "syntax error at line %d\n", Line);
             exit(1);
     }
 }
