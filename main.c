@@ -34,6 +34,5 @@ void main(int argc, char *argv[]) {
     scanfile();
     scan(&Token);
     n=binexpr();
-    printf("%d\n", interpretAST(n));
     exit(0);
 }
