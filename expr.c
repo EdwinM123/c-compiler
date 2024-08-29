@@ -16,8 +16,8 @@ static struct ASTnode *primary(void) {
     }
 }
 
-int arithop(int tokentype) {
-    switch(tokentype) {
+int arithop(int tok) {
+    switch(tok) {
         case T_PLUS:
             return(A_ADD);
         case T_MINUS:
@@ -32,20 +32,9 @@ int arithop(int tokentype) {
     }
 }
 
-static int OpPrec[] = { 0, 10, 10, 20, 20, 0 };
-
-static int op_precedence(int tokentype) {
-    int prec = OpPrec[tokentype];
-    if(prec == 0) {
-        fprintf(stderr, "syntax error on line %d, token %d\n", Line, tokentype); 
-        exit(1);
-    }
-    return(prec);
-}
-
-struct ASTnode *binexpr(int ptp) {
+struct ASTnode *binexpr(void) {
     struct ASTnode *left, *right;
-    int tokentype;
+    int nodetype;
 
     left = primary();
 
@@ -63,4 +52,15 @@ struct ASTnode *binexpr(int ptp) {
         if(tokentype == T_EOF) return (left);
     }
     return(left);
-} 
+}
+
+static int OpPrec[] = { 0, 10, 10, 20, 20,     0 };
+
+static int op_precedence(int tokentype) {
+    int prec = OpPrec[tokentype];
+    if(prec == 0) {
+        fprintf(stderr, "syntax error on line %d, token %d\n", Line, tokentype); 
+        exit(1);
+    }
+    return(prec);
+}

@@ -1,7 +1,3 @@
-#include "defs.h"
-#include "data.h"
-#include "decl.h"
-
 struct ASTnode *additive_expr(void) {
     struct ASTnode *left, *right;
     int tokentype;
