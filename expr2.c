@@ -2,6 +2,20 @@
 #include "data.h"
 #include "decl.h"
 
+static struct ASTnode *primary(void) {
+    struct ASTnode *n;
+
+    switch(Token.token) {
+        case T_INTLIT:
+            n = mkastleaf(A_INTLIT, Token.intvalue);
+            scan(&Token);
+            return(n);
+        default:
+            fprintf(stderr, "syntax error on line %d, token %d\n", Line, Token.token);
+            exit(1);
+    }
+}
+
 struct ASTnode *additive_expr(void) {
     struct ASTnode *left, *right;
     int tokentype;
