@@ -1,13 +1,4 @@
 #include "defs.h"
-#include "data.h"
-#include "decl.h"
-
-static int chrpos(char *s, int c) {
-    char *p;
-
-    p=strchr(s, c);
-    return(p ? p -s : -1);
-}
 
 static int next(void) {
     int c;
@@ -37,18 +28,6 @@ static int skip(void) {
     return(c);
 }
 
-static int scanint(int c) {
-    int k, val =0;
-
-    while((k = chrpos("0123456789", c))>=0) {
-        val = val*10+k;
-        c=next();
-    }
-
-    putback(c);
-    return val;
-} 
-
 int scan(struct token *t) {
     int c;
 
@@ -60,7 +39,7 @@ int scan(struct token *t) {
         case '+':
             t->token=T_PLUS; 
             break;
-        case '-':
+        case '-';
             t->token = T_MINUS;
             break;
         case '*':
@@ -80,4 +59,23 @@ int scan(struct token *t) {
             exit(1);
     }
     return (1);
-} 
+}
+
+static int scanint(int c) {
+    int k, val =0;
+
+    while((k = chrpos("0123456789", c))>=0) {
+        val = val*10+k;
+        c=next();
+    }
+
+    putback(c);
+    return val;
+}
+
+static int chrpos(char *s, int c) {
+    char *p;
+
+    p=strchr(s, c);
+    return(p ? p -s : -1);
+}
