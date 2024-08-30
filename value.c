@@ -31,7 +31,10 @@ void printValue(Value value){
   if(IS_BOOL(value)) {
     printf(AS_BOOL(value) ? "true" : "false");
   }
-  else if (IS_NIL(value)) {
+  else if(IS_NIL(value)) {
+    printf("nil");
+  }
+  else if (IS_NUMBER(value)) {
     printf("%g", AS_NUMBER(value));
   }
   else if (IS_OBJ(value)) {
