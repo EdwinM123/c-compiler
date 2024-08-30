@@ -245,7 +245,6 @@ static void endScope(){
   current->scopeDepth--;
 
   while(current->localCount>0 && current->locals[current->localCount-1].depth > current->scopeDepth){
-    emitByte(OP_POP);
     if(current->locals[current->localCount-1].isCaptured){
       emitByte(OP_CLOSE_UPVALUE);
     }
@@ -405,16 +404,16 @@ static void binary(bool canAssign){
   parsePrecedence((Precedence)(rule->precedence+1));
 
   switch(operatorType){
-    case TOKEN_BANG_EQUAL: emitBytes(OP_EQUAL, OP_NOT); break;
-    case TOKEN_EQUAL_EQUAL: emitByte(OP_EQUAL); break;
-    case TOKEN_GREATER: emitByte(OP_GREATER); break;
+    case TOKEN_BANG_EQUAL:    emitBytes(OP_EQUAL, OP_NOT); break;
+    case TOKEN_EQUAL_EQUAL:   emitByte(OP_EQUAL); break;
+    case TOKEN_GREATER:       emitByte(OP_GREATER); break;
     case TOKEN_GREATER_EQUAL: emitBytes(OP_LESS, OP_NOT); break;
-    case TOKEN_LESS: emitByte(OP_LESS); break;
-    case TOKEN_LESS_EQUAL: emitBytes(OP_GREATER, OP_NOT); break;
-    case TOKEN_PLUS: emitByte(OP_ADD); break;
-    case TOKEN_MINUS:emitByte(OP_SUBTRACT); break;
-    case TOKEN_STAR: emitByte(OP_MULTIPLY); break;
-    case TOKEN_SLASH:emitByte(OP_DIVIDE); break;
+    case TOKEN_LESS:          emitByte(OP_LESS); break;
+    case TOKEN_LESS_EQUAL:    emitBytes(OP_GREATER, OP_NOT); break;
+    case TOKEN_PLUS:          emitByte(OP_ADD); break;
+    case TOKEN_MINUS:         emitByte(OP_SUBTRACT); break;
+    case TOKEN_STAR:          emitByte(OP_MULTIPLY); break;
+    case TOKEN_SLASH:         emitByte(OP_DIVIDE); break;
     default: return;
   }
 }
@@ -584,8 +583,8 @@ ParseRule rules[]={
   [TOKEN_NUMBER]        = {number,   NULL,   PREC_NONE},
   [TOKEN_AND]           = {NULL,     and_,   PREC_AND}, 
   [TOKEN_CLASS]         = {NULL,     NULL,   PREC_NONE},
-  [TOKEN_ELSE]          = {literal,  NULL,   PREC_NONE},
-  [TOKEN_FALSE]         = {NULL,     NULL,   PREC_NONE},
+  [TOKEN_ELSE]          = {NULL,     NULL,   PREC_NONE},
+  [TOKEN_FALSE]         = {literal,  NULL,   PREC_NONE},
   [TOKEN_FOR]           = {NULL,     NULL,   PREC_NONE},
   [TOKEN_FUN]           = {NULL,     NULL,   PREC_NONE},
   [TOKEN_IF]            = {NULL,     NULL,   PREC_NONE},
@@ -672,8 +671,7 @@ static void function(FunctionType type){
 
 static void method(){
   consume(TOKEN_IDENTIFIER, "Expect method name.");
-  Token className = parser.previous; 
-  uint8_t constant = identifierConstant(&parser.previous);
+  uint8_t constant = identifierConstant(&parser.previous);  
   
   FunctionType type = TYPE_METHOD;
   if(parser.previous.length==4 && memcmp(parser.previous.start, "init", 4)==0){
