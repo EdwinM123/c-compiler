@@ -1,0 +1,7 @@
+fun printVariable(x){
+    print(x);
+}
+
+var y = 5;
+
+printVariable(y);
