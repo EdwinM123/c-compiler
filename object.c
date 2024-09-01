@@ -152,6 +152,7 @@ void printObject(Value value){
       break;
     case OBJ_NATIVE:
       printf("<native fn>");
+      break;
     case OBJ_STRING:
       printf("%s", AS_CSTRING(value)); 
       break;
